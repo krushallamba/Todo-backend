@@ -13,12 +13,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
+  async register(name: string, email: string, password: string) {
     const hash = await bcrypt.hash(password, 10);
-    const user = this.userRepo.create({ email, password: hash });
+    const user = this.userRepo.create({ name, email, password: hash });
     await this.userRepo.save(user);
     return { message: 'User registered' };
   }
+  
 
   async login(email: string, password: string) {
     const user = await this.userRepo.findOne({ where: { email } });
