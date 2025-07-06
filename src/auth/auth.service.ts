@@ -14,6 +14,10 @@ export class AuthService {
   ) {}
 
   async register(email: string, password: string) {
+    const existingUser = await this.userRepo.findOne({ where: { email } });
+    if(existingUser){
+      throw new UnauthorizedException('User already exist! Please login.');
+    }
     const hash = await bcrypt.hash(password, 10);
     const user = this.userRepo.create({ email, password: hash });
     await this.userRepo.save(user);
