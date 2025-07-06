@@ -6,24 +6,28 @@ import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
+import { MailModule } from './mail/mail.module';   // ✅ Added
+
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Makes the configuration available globally
-      envFilePath: '.env', // Load environment variables from .env file
+      isGlobal: true,
+      envFilePath: '.env',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: process.env.DB_USERNAME, 
-      password: process.env.DB_PASSWORD,       
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
       database: 'taskflow',
-      synchronize: true,          
+      synchronize: true,
       autoLoadEntities: true,
     }),
+  
+    MailModule,                                   // ✅ Mail module
     TasksModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
